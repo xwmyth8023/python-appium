@@ -3,7 +3,7 @@ def get_desired_capabilities():
         "platformName": "Android",
         "platformVersion": "9",
         "udid": "emulator-5554",
-        "app": "/Users/sandy/Desktop/python-appium/bin/thebump_qa.apk",
+        "app": "/Users/sandy/Desktop/python-appium/bin/testAPP.apk",
         "automationName": "Appium",
         "deviceName": "Pixel 2",
         "newCommandTimeout": 20000,
