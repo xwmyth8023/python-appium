@@ -2,13 +2,17 @@ import time
 from appium import webdriver
 import os.path
 from helper.logger import Logger
+from config import config
+
+caps = config.desired_caps
+url = config.host_url
 
 class BasePage(object):
 
     def __init__(self, driver):
-        self.driver = driver
+        self.driver = webdriver.Remote(url,caps)
 
-    def quit_browser(self):
+    def quit(self):
         self.driver.quit()
 
     def forward(self):
