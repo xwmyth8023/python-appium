@@ -1,11 +1,16 @@
+import sys
+sys.path.append('..')
 import time
 from appium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 import os.path
 from helper.logger import Logger
 from config import config
 
 caps = config.desired_caps
 url = config.host_url
+
+logger = Logger(logger="BasePage").getlog()
 
 class BasePage(object):
 
@@ -34,7 +39,7 @@ class BasePage(object):
         except NameError as e:
             logger.error("Failed to quit the browser with {}".format(e))
 
-    def get_windows_img(self):
+    def get_screenshot(self):
         file_path = os.path.dirname(os.path.abspath('.')) + '/screenshots/'
         rq = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
         screen_name = file_path + rq + '.png'
@@ -43,7 +48,7 @@ class BasePage(object):
             logger.info("Had take screenshot and save to folder : /screenshots")
         except NameError as e:
             logger.error("Failed to take screenshot! {}".format(e))
-            self.get_windows_img()
+            self.get_screenshot()
 
     def find_element(self, selector):
         """
@@ -66,7 +71,7 @@ class BasePage(object):
                 logger.info("Had find the element {} successful by {} via value: {}".format(element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.error("NoSuchElementException: {}".format(e))
-                self.get_windows_img()   # take screenshot
+                self.get_screenshot()   # take screenshot
         elif selector_by == "n" or selector_by == 'name':
             element = self.driver.find_element_by_name(selector_value)
         elif selector_by == "c" or selector_by == 'class_name':
@@ -83,8 +88,8 @@ class BasePage(object):
                 logger.info("Had find the element {} successful by {} via value: {}".format(element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.error("NoSuchElementException: {}".format(e))
-                self.get_windows_img()
-        elif selector_by == "s" or selector_by == 'selector_selector':
+                self.get_screenshot()
+        elif selector_by == "s" or selector_by == 'css_selector':
             element = self.driver.find_element_by_css_selector(selector_value)
         else:
             raise NameError("Please enter a valid type of targeting elements.")
@@ -99,7 +104,7 @@ class BasePage(object):
             logger.info("Had type {} in inputBox".format(text))
         except NameError as e:
             logger.error("Failed to type in input box with {}".format(e))
-            self.get_windows_img()
+            self.get_screenshot()
 
     def clear(self, selector):
 
@@ -109,7 +114,7 @@ class BasePage(object):
             logger.info("Clear text in input box before typing.")
         except NameError as e:
             logger.error("Failed to clear in input box with {}".format(e))
-            self.get_windows_img()
+            self.get_screenshot()
 
     def click(self, selector):
 
@@ -128,3 +133,15 @@ class BasePage(object):
     def sleep(seconds):
         time.sleep(seconds)
         logger.info("Sleep for {} seconds".format(seconds))
+    
+    def lock(self,seconds):
+        self.driver.lock(seconds)
+        logger.info("Lock the screen {} seconds.".format(seconds))
+    
+    def unlock(self):
+        self.driver.unlock()
+        logger.info("Unlock the screen")
+    
+    def background_app(self,seconds):
+        self.driver.background_app(seconds)
+        logger.info("Put the app to background {} seconds.".format(seconds))
