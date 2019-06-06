@@ -2,15 +2,14 @@ import time
 from appium import webdriver
 import os.path
 from helper.logger import Logger
-from config import config
+from selenium.common.exceptions import NoSuchElementException
 
-caps = config.desired_caps
-url = config.host_url
+logger = Logger(logger="BasePage").getlog()
 
 class BasePage(object):
 
     def __init__(self, driver):
-        self.driver = webdriver.Remote(url,caps)
+        self.driver = driver
 
     def quit(self):
         self.driver.quit()
