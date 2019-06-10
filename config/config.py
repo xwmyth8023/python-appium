@@ -13,9 +13,3 @@ desired_caps = {
 }
 
 host_url = 'http://localhost:4723/wd/hub'
-
-test_account = {
-    email: '',
-    password: ''
-}
-
